@@ -1,4 +1,4 @@
-import 'package:bhakti_setu/views/dashboard_screen.dart';
+import 'package:bhakti_setu/presentation/screens/home/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
