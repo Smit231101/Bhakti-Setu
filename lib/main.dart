@@ -1,22 +1,9 @@
-import 'package:bhakti_setu/presentation/screens/home/dashboard_screen.dart';
+import 'package:bhakti_setu/bhakti_setu.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const BhaktiSetuApp());
-}
-
-class BhaktiSetuApp extends StatelessWidget {
-  const BhaktiSetuApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Bhakti Setu App",
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black45
-      ),
-      home: DashboardScreen(),
-    );
-  }
 }
