@@ -15,8 +15,8 @@ class FestivalApiService {
         }
         final List<dynamic> data = response.data;
         return data
-            .map((e) => FestivalModel.fromjson(e))
-            .where((f) => f.type == "Festival")
+            .map((e) => FestivalModel.fromJson(e))
+            .where((f) => f.type == "Religional Festival")
             .toList();
       } else {
         if (kDebugMode) {
