@@ -1,4 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/festival_provider.dart';
 
@@ -13,6 +15,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final TextEditingController yearController = TextEditingController(
     text: "2026",
   );
+  final String? khodiyarJayanti2027Date = null;
 
   @override
   void initState() {
@@ -23,62 +26,404 @@ class _FestivalScreenState extends State<FestivalScreen> {
   }
 
   @override
+  void dispose() {
+    yearController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = context.watch<FestivalProvider>();
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Festivals")),
+      backgroundColor: const Color(0xFF121212),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+        title: Text(
+          "Festivals & Muhurat",
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            letterSpacing: 0.5,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+        bottom: false,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildUpcomingHighlightCard(),
+              _buildSearchHeader(context),
+              Expanded(
+                child: Consumer<FestivalProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.isLoading) {
+                      return _buildLoadingState();
+                    }
 
-      body: Column(
+                    if (provider.error != null) {
+                      return _buildErrorState(provider.error!);
+                    }
+
+                    if (provider.festivals.isEmpty) {
+                      return _buildEmptyState();
+                    }
+
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      itemCount: provider.festivals.length,
+                      itemBuilder: (context, index) {
+                        final festival = provider.festivals[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: _buildFestivalCard(festival),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUpcomingHighlightCard() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFF8A00), Color(0xFFE52E71)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFF8A00).withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: yearController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: "Enter Year"),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  color: Colors.white,
+                  size: 14,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                "UPCOMING MAJOR EVENT",
+                style: GoogleFonts.poppins(
+                  color: Colors.white.withOpacity(0.9),
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5,
+                  fontSize: 10,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            "Khodiyar Jayanti 2027",
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              height: 1.1,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      khodiyarJayanti2027Date != null
+                          ? Icons.event_available
+                          : Icons.pending_actions,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      khodiyarJayanti2027Date ?? "Date: To be confirmed",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 16),
+            Icon(Icons.search, color: Colors.white.withOpacity(0.4)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: TextField(
+                controller: yearController,
+                keyboardType: TextInputType.number,
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
+                cursorColor: const Color(0xFFFF8A00),
+                decoration: InputDecoration(
+                  hintText: "Search Year",
+                  hintStyle: GoogleFonts.poppins(
+                    color: Colors.white.withOpacity(0.3),
+                    fontSize: 16,
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  context.read<FestivalProvider>().loadFestivals(
+                    yearController.text,
+                  );
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF8A00), Color(0xFFFF6A00)],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    child: Text(
+                      "Load",
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    provider.loadFestivals(yearController.text);
-                  },
-                  child: const Text("Load"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFestivalCard(dynamic festival) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFF8A00).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.festival_rounded,
+                      color: Color(0xFFFF8A00),
+                      size: 24,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        festival.name,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_today_rounded,
+                            size: 12,
+                            color: Colors.white.withOpacity(0.4),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            festival.date,
+                            style: GoogleFonts.poppins(
+                              color: Colors.white.withOpacity(0.5),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Colors.white.withOpacity(0.2),
+                  size: 16,
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
 
-          Expanded(
-            child: Builder(
-              builder: (_) {
-                if (provider.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+  Widget _buildLoadingState() {
+    return const Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF8A00)),
+        strokeWidth: 3,
+      ),
+    );
+  }
 
-                if (provider.error != null) {
-                  return Center(child: Text(provider.error!));
-                }
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.redAccent.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.error_outline,
+              size: 40,
+              color: Colors.redAccent,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            error,
+            style: GoogleFonts.poppins(color: Colors.redAccent, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
 
-                if (provider.festivals.isEmpty) {
-                  return const Center(child: Text("No festivals found"));
-                }
-
-                return ListView.builder(
-                  itemCount: provider.festivals.length,
-                  itemBuilder: (context, index) {
-                    final festival = provider.festivals[index];
-
-                    return ListTile(
-                      title: Text(festival.name),
-                      subtitle: Text(festival.date),
-                    );
-                  },
-                );
-              },
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.event_busy_rounded,
+              size: 40,
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            "No events found",
+            style: GoogleFonts.poppins(
+              color: Colors.white.withOpacity(0.5),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
