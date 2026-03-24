@@ -9,7 +9,7 @@ class FestivalModel extends FestivalEntity {
 
   factory FestivalModel.fromJson(Map<String, dynamic> json) {
     return FestivalModel(
-      name: json['name'] ?? '',
+      name: json['name'] ?? json['event'] ?? '',
       date: json['date'] ?? '',
       type: json['type'] ?? '',
     );
