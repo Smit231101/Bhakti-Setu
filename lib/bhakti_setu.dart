@@ -1,5 +1,8 @@
+import 'package:bhakti_setu/data/repositories/event_repository.dart';
 import 'package:bhakti_setu/data/repositories/festival_repository.dart';
 import 'package:bhakti_setu/data/services/api/festival_api_service.dart';
+import 'package:bhakti_setu/data/services/firebase/firestore_service.dart';
+import 'package:bhakti_setu/presentation/providers/event_provider.dart';
 import 'package:bhakti_setu/presentation/providers/festival_provider.dart';
 import 'package:bhakti_setu/presentation/screens/festival/festival_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,11 @@ class BhaktiSetuApp extends StatelessWidget {
           create: (_) =>
               FestivalProvider(FestivalRepository(FestivalApiService())),
         ),
+        ChangeNotifierProvider(
+      create: (_) => EventProvider(
+        EventRepository(EventFirestoreService()),
+      ),
+    ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
