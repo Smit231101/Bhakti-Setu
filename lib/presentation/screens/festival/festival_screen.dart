@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:bhakti_setu/presentation/providers/temple_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -13,15 +14,14 @@ class FestivalScreen extends StatefulWidget {
 
 class _FestivalScreenState extends State<FestivalScreen> {
   final TextEditingController yearController = TextEditingController(
-    text: "2026",
+    text: DateTime.now().year.toString(),
   );
-  final String? khodiyarJayanti2027Date = null;
-
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<FestivalProvider>().loadFestivals("2026");
+      context.read<FestivalProvider>().loadFestivals(yearController.text);
+      context.read<TempleProvider>().loadJayanti();
     });
   }
 
@@ -104,105 +104,19 @@ class _FestivalScreenState extends State<FestivalScreen> {
   }
 
   Widget _buildUpcomingHighlightCard() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFF8A00), Color(0xFFE52E71)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFFFF8A00).withOpacity(0.4),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    return Consumer<TempleProvider>(
+      builder: (context, templeProvider, child) {
+        final year = templeProvider.displayYear;
+        final dateString = templeProvider.jayantiDate;
+
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          child: _PremiumHighlightCard(
+            year: year.toString(),
+            dateString: dateString,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.auto_awesome,
-                  color: Colors.white,
-                  size: 14,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                "UPCOMING MAJOR EVENT",
-                style: GoogleFonts.poppins(
-                  color: Colors.white.withOpacity(0.9),
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.5,
-                  fontSize: 10,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "Khodiyar Jayanti 2027",
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              height: 1.1,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      khodiyarJayanti2027Date != null
-                          ? Icons.event_available
-                          : Icons.pending_actions,
-                      color: Colors.white,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      khodiyarJayanti2027Date ?? "Date: To be confirmed",
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -427,6 +341,213 @@ class _FestivalScreenState extends State<FestivalScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PremiumHighlightCard extends StatefulWidget {
+  final String year;
+  final String? dateString;
+
+  const _PremiumHighlightCard({required this.year, required this.dateString});
+
+  @override
+  State<_PremiumHighlightCard> createState() => _PremiumHighlightCardState();
+}
+
+class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _scaleController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOutCubic),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => _scaleController.forward(),
+      onTapUp: (_) => _scaleController.reverse(),
+      onTapCancel: () => _scaleController.reverse(),
+      onTap: () {
+      },
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(28),
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFFD35400),
+                Color(0xFF8E44AD),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFD35400).withOpacity(0.3),
+                blurRadius: 25,
+                offset: const Offset(0, 12),
+                spreadRadius: -5,
+              ),
+            ],
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                right: -30,
+                bottom: -30,
+                child: Transform.rotate(
+                  angle: -0.2,
+                  child: Icon(
+                    Icons.temple_hindu_rounded,
+                    size: 180,
+                    color: Colors.white.withOpacity(0.07),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.15),
+                          width: 0.5,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.stars_rounded,
+                            color: Color(0xFFFFD700),
+                            size: 14,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            "UPCOMING MAJOR EVENT",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white.withOpacity(0.95),
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.2,
+                              fontSize: 9,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Khodiyar Jayanti\n",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w700,
+                              height: 1.2,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: widget.year,
+                            style: GoogleFonts.poppins(
+                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 26,
+                              fontWeight: FontWeight
+                                  .w300,
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.25),
+                              width: 1,
+                            ),
+                            // Inner glow to make the glass pop
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white.withOpacity(0.15),
+                                Colors.white.withOpacity(0.02),
+                              ],
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                widget.dateString != null
+                                    ? Icons.calendar_month_rounded
+                                    : Icons.hourglass_empty_rounded,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                widget.dateString ?? "Date to be announced",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
