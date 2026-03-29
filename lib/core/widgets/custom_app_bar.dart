@@ -1,12 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:bhakti_setu/core/theme/app_colors.dart'; // Make sure this path is correct!
+import 'package:bhakti_setu/core/theme/app_colors.dart';
 
 class PremiumGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final List<Widget>? actions; // Optional: In case you need buttons on the right side later
+  final List<Widget>? actions;
 
   const PremiumGlassAppBar({
     super.key,
