@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:bhakti_setu/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bhakti_setu/core/theme/app_colors.dart';
@@ -28,26 +29,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.scaffoldDeep,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.black.withOpacity(0.4),
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(color: Colors.transparent),
-          ),
-        ),
-        title: Text(
-          "Aai Shree Khodiyar Maa",
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-            letterSpacing: 0.5,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: PremiumGlassAppBar(title: "🔱|| આઈ શ્રી ખોડિયાર માઁ ||🚩"),
       body: GridView.builder(
         padding: EdgeInsets.only(
           top: topPadding,
@@ -155,10 +137,7 @@ class _PremiumMenuCardState extends State<_PremiumMenuCard>
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  AppColors.surfaceLight,
-                  AppColors.scaffoldBackground,
-                ],
+                colors: [AppColors.surfaceLight, AppColors.scaffoldBackground],
               ),
               border: Border.all(
                 color: AppColors.glassBorder.withOpacity(0.08),
@@ -181,9 +160,7 @@ class _PremiumMenuCardState extends State<_PremiumMenuCard>
                     shape: BoxShape.circle,
                     color: AppColors.primaryOrange.withOpacity(0.1),
                     border: Border.all(
-                      color: AppColors.primaryOrange.withOpacity(
-                        0.2,
-                      ),
+                      color: AppColors.primaryOrange.withOpacity(0.2),
                       width: 1,
                     ),
                   ),
