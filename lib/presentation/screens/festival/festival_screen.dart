@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:bhakti_setu/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -37,26 +38,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(color: Colors.transparent),
-          ),
-        ),
-        title: Text(
-          "Festivals & Muhurat",
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-            letterSpacing: 0.5,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const PremiumGlassAppBar(title: "Festivals & Muhurat"),
       extendBodyBehindAppBar: true,
       body: SafeArea(
         bottom: false,
