@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bhakti_setu/core/theme/app_colors.dart';
 import 'package:bhakti_setu/presentation/screens/event/event_screen.dart';
 import 'package:bhakti_setu/presentation/screens/festival/festival_screen.dart';
 
@@ -25,9 +26,7 @@ class HomeScreen extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top + kToolbarHeight + 20;
 
     return Scaffold(
-      backgroundColor: const Color(
-        0xFF0A0A0A,
-      ),
+      backgroundColor: AppColors.scaffoldDeep,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
@@ -42,7 +41,7 @@ class HomeScreen extends StatelessWidget {
           "Aai Shree Khodiyar Maa",
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: AppColors.textPrimary,
             letterSpacing: 0.5,
             fontSize: 20,
           ),
@@ -60,7 +59,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
-          childAspectRatio: 0.95, 
+          childAspectRatio: 0.95,
         ),
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
@@ -131,10 +130,7 @@ class _PremiumMenuCardState extends State<_PremiumMenuCard>
       builder: (context, value, child) {
         return Transform.translate(
           offset: Offset(0, 30 * (1 - value)),
-          child: Opacity(
-            opacity: value,
-            child: child,
-          ),
+          child: Opacity(opacity: value, child: child),
         );
       },
       child: GestureDetector(
@@ -159,10 +155,13 @@ class _PremiumMenuCardState extends State<_PremiumMenuCard>
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF232323), Color(0xFF151515)],
+                colors: [
+                  AppColors.surfaceLight,
+                  AppColors.scaffoldBackground,
+                ],
               ),
               border: Border.all(
-                color: Colors.white.withOpacity(0.08),
+                color: AppColors.glassBorder.withOpacity(0.08),
                 width: 1.5,
               ),
               boxShadow: [
@@ -180,16 +179,18 @@ class _PremiumMenuCardState extends State<_PremiumMenuCard>
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.orange.withOpacity(0.1),
+                    color: AppColors.primaryOrange.withOpacity(0.1),
                     border: Border.all(
-                      color: Colors.orange.withOpacity(0.2),
+                      color: AppColors.primaryOrange.withOpacity(
+                        0.2,
+                      ),
                       width: 1,
                     ),
                   ),
                   child: Icon(
                     widget.icon,
                     size: 36,
-                    color: Colors.orangeAccent,
+                    color: AppColors.primaryOrange,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -199,7 +200,7 @@ class _PremiumMenuCardState extends State<_PremiumMenuCard>
                     widget.title,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppColors.textPrimary.withOpacity(0.9),
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       letterSpacing: 0.3,
