@@ -1,8 +1,9 @@
 import 'dart:ui';
-import 'package:bhakti_setu/presentation/providers/temple_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:bhakti_setu/core/theme/app_colors.dart';
+import 'package:bhakti_setu/presentation/providers/temple_provider.dart';
 import '../../providers/festival_provider.dart';
 
 class FestivalScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final TextEditingController yearController = TextEditingController(
     text: DateTime.now().year.toString(),
   );
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +36,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -48,7 +50,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           "Festivals & Muhurat",
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: AppColors.textPrimary,
             letterSpacing: 0.5,
             fontSize: 20,
           ),
@@ -126,9 +128,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
       child: Container(
         height: 60,
         decoration: BoxDecoration(
-          color: const Color(0xFF1E1E1E),
+          color: AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          border: Border.all(color: AppColors.textPrimary.withOpacity(0.05)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -140,18 +142,21 @@ class _FestivalScreenState extends State<FestivalScreen> {
         child: Row(
           children: [
             const SizedBox(width: 16),
-            Icon(Icons.search, color: Colors.white.withOpacity(0.4)),
+            Icon(Icons.search, color: AppColors.textMuted),
             const SizedBox(width: 12),
             Expanded(
               child: TextField(
                 controller: yearController,
                 keyboardType: TextInputType.number,
-                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
-                cursorColor: const Color(0xFFFF8A00),
+                style: GoogleFonts.poppins(
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                ),
+                cursorColor: AppColors.primaryOrange,
                 decoration: InputDecoration(
                   hintText: "Search Year",
                   hintStyle: GoogleFonts.poppins(
-                    color: Colors.white.withOpacity(0.3),
+                    color: AppColors.textMuted,
                     fontSize: 16,
                   ),
                   border: InputBorder.none,
@@ -170,9 +175,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 borderRadius: BorderRadius.circular(10),
                 child: Ink(
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFFF8A00), Color(0xFFFF6A00)],
-                    ),
+                    gradient: AppColors.buttonGradient,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Container(
@@ -184,7 +187,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                       "Load",
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                   ),
@@ -200,9 +203,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
   Widget _buildFestivalCard(dynamic festival) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: AppColors.textPrimary.withOpacity(0.05)),
       ),
       child: Material(
         color: Colors.transparent,
@@ -217,13 +220,13 @@ class _FestivalScreenState extends State<FestivalScreen> {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFF8A00).withOpacity(0.1),
+                    color: AppColors.primaryOrange.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Center(
                     child: Icon(
                       Icons.festival_rounded,
-                      color: Color(0xFFFF8A00),
+                      color: AppColors.primaryOrange,
                       size: 24,
                     ),
                   ),
@@ -238,7 +241,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -249,13 +252,13 @@ class _FestivalScreenState extends State<FestivalScreen> {
                           Icon(
                             Icons.calendar_today_rounded,
                             size: 12,
-                            color: Colors.white.withOpacity(0.4),
+                            color: AppColors.textMuted,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             festival.date,
                             style: GoogleFonts.poppins(
-                              color: Colors.white.withOpacity(0.5),
+                              color: AppColors.textMuted,
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                             ),
@@ -267,7 +270,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 ),
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  color: Colors.white.withOpacity(0.2),
+                  color: AppColors.textPrimary.withOpacity(0.2),
                   size: 16,
                 ),
               ],
@@ -281,7 +284,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   Widget _buildLoadingState() {
     return const Center(
       child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF8A00)),
+        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
         strokeWidth: 3,
       ),
     );
@@ -295,19 +298,19 @@ class _FestivalScreenState extends State<FestivalScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.redAccent.withOpacity(0.1),
+              color: AppColors.error.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.error_outline,
               size: 40,
-              color: Colors.redAccent,
+              color: AppColors.error,
             ),
           ),
           const SizedBox(height: 16),
           Text(
             error,
-            style: GoogleFonts.poppins(color: Colors.redAccent, fontSize: 14),
+            style: GoogleFonts.poppins(color: AppColors.error, fontSize: 14),
           ),
         ],
       ),
@@ -322,20 +325,20 @@ class _FestivalScreenState extends State<FestivalScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
+              color: AppColors.textPrimary.withOpacity(0.05),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.event_busy_rounded,
               size: 40,
-              color: Colors.white.withOpacity(0.3),
+              color: AppColors.textMuted,
             ),
           ),
           const SizedBox(height: 16),
           Text(
             "No events found",
             style: GoogleFonts.poppins(
-              color: Colors.white.withOpacity(0.5),
+              color: AppColors.textMuted,
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
@@ -385,25 +388,17 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
       onTapDown: (_) => _scaleController.forward(),
       onTapUp: (_) => _scaleController.reverse(),
       onTapCancel: () => _scaleController.reverse(),
-      onTap: () {
-      },
+      onTap: () {},
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(28),
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFFD35400),
-                Color(0xFF8E44AD),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            gradient: AppColors.premiumGradient,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFD35400).withOpacity(0.3),
+                color: AppColors.gradientOrange.withOpacity(0.3),
                 blurRadius: 25,
                 offset: const Offset(0, 12),
                 spreadRadius: -5,
@@ -420,7 +415,7 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                   child: Icon(
                     Icons.temple_hindu_rounded,
                     size: 180,
-                    color: Colors.white.withOpacity(0.07),
+                    color: AppColors.textPrimary.withOpacity(0.07),
                   ),
                 ),
               ),
@@ -438,7 +433,7 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                         color: Colors.black.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.15),
+                          color: AppColors.textPrimary.withOpacity(0.15),
                           width: 0.5,
                         ),
                       ),
@@ -447,14 +442,14 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                         children: [
                           const Icon(
                             Icons.stars_rounded,
-                            color: Color(0xFFFFD700),
+                            color: AppColors.accentGold,
                             size: 14,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             "UPCOMING MAJOR EVENT",
                             style: GoogleFonts.poppins(
-                              color: Colors.white.withOpacity(0.95),
+                              color: AppColors.textPrimary.withOpacity(0.95),
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1.2,
                               fontSize: 9,
@@ -470,7 +465,7 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                           TextSpan(
                             text: "Khodiyar Jayanti\n",
                             style: GoogleFonts.poppins(
-                              color: Colors.white,
+                              color: AppColors.textPrimary,
                               fontSize: 28,
                               fontWeight: FontWeight.w700,
                               height: 1.2,
@@ -480,10 +475,9 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                           TextSpan(
                             text: widget.year,
                             style: GoogleFonts.poppins(
-                              color: Colors.white.withOpacity(0.8),
+                              color: AppColors.textSecondary,
                               fontSize: 26,
-                              fontWeight: FontWeight
-                                  .w300,
+                              fontWeight: FontWeight.w300,
                               height: 1.2,
                             ),
                           ),
@@ -501,19 +495,18 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                             vertical: 12,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
+                            color: AppColors.textPrimary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.25),
+                              color: AppColors.textPrimary.withOpacity(0.25),
                               width: 1,
                             ),
-                            // Inner glow to make the glass pop
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                Colors.white.withOpacity(0.15),
-                                Colors.white.withOpacity(0.02),
+                                AppColors.textPrimary.withOpacity(0.15),
+                                AppColors.textPrimary.withOpacity(0.02),
                               ],
                             ),
                           ),
@@ -524,14 +517,14 @@ class _PremiumHighlightCardState extends State<_PremiumHighlightCard>
                                 widget.dateString != null
                                     ? Icons.calendar_month_rounded
                                     : Icons.hourglass_empty_rounded,
-                                color: Colors.white,
+                                color: AppColors.textPrimary,
                                 size: 18,
                               ),
                               const SizedBox(width: 10),
                               Text(
                                 widget.dateString ?? "Date to be announced",
                                 style: GoogleFonts.poppins(
-                                  color: Colors.white,
+                                  color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                   letterSpacing: 0.3,
