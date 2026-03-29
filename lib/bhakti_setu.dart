@@ -1,9 +1,4 @@
-import 'package:bhakti_setu/data/repositories/event_repository.dart';
-import 'package:bhakti_setu/data/repositories/festival_repository.dart';
-import 'package:bhakti_setu/data/services/api/festival_api_service.dart';
-import 'package:bhakti_setu/data/services/firebase/firestore_service.dart';
-import 'package:bhakti_setu/presentation/providers/event_provider.dart';
-import 'package:bhakti_setu/presentation/providers/festival_provider.dart';
+import 'package:bhakti_setu/presentation/app_providers.dart';
 import 'package:bhakti_setu/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,17 +8,7 @@ class BhaktiSetuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) =>
-              FestivalProvider(FestivalRepository(FestivalApiService())),
-        ),
-        ChangeNotifierProvider(
-      create: (_) => EventProvider(
-        EventRepository(EventFirestoreService()),
-      ),
-    ),
-      ],
+      providers: appProviders,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Bhakti Setu App",
