@@ -220,7 +220,9 @@ class _PremiumEventCardState extends State<_PremiumEventCard>
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const DashboardScreen()),
+            MaterialPageRoute(
+              builder: (context) => DashboardScreen(event: widget.event),
+            ),
           );
         },
         child: ScaleTransition(
