@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:bhakti_setu/presentation/screens/home/dashboard_screen.dart';
+import 'package:bhakti_setu/presentation/screens/event/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
