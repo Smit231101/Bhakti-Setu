@@ -1,5 +1,6 @@
 import 'package:bhakti_setu/data/models/donor_model.dart';
 import 'package:bhakti_setu/data/repositories/donor_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DonorProvider extends ChangeNotifier {
@@ -18,6 +19,9 @@ class DonorProvider extends ChangeNotifier {
       notifyListeners();
 
       donors = await _repository.fetchDonors();
+      if (kDebugMode) {
+        print("Donors: ${donors.length}");
+      }
     } catch (e) {
       error = e.toString();
     } finally {
