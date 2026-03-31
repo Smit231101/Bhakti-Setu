@@ -26,12 +26,11 @@ class _DonorScreenState extends State<DonorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Dynamic padding so content flows behind the blurred app bar
     final topPadding = MediaQuery.of(context).padding.top + kToolbarHeight + 16;
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldDeep, // Deep classic background
-      extendBodyBehindAppBar: true, // Required for PremiumGlassAppBar
+      backgroundColor: AppColors.scaffoldDeep,
+      extendBodyBehindAppBar: true,
       appBar: const PremiumGlassAppBar(title: "Donors of Mandir"),
       body: Consumer<DonorProvider>(
         builder: (context, provider, child) {
@@ -66,12 +65,10 @@ class _DonorScreenState extends State<DonorScreen> {
     );
   }
 
-  // --- PREMIUM STATES ---
-
   Widget _buildLoadingState() {
     return const Center(
       child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(AppColors.accentGold),
+        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryOrange),
         strokeWidth: 3,
       ),
     );
@@ -157,8 +154,6 @@ class _DonorScreenState extends State<DonorScreen> {
   }
 }
 
-// --- PREMIUM DONOR CARD WIDGET ---
-
 class _PremiumDonorCard extends StatefulWidget {
   final dynamic donor;
   final int index;
@@ -181,7 +176,7 @@ class _PremiumDonorCardState extends State<_PremiumDonorCard>
       vsync: this,
       duration: const Duration(milliseconds: 120),
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(
       CurvedAnimation(parent: _scaleController, curve: Curves.easeInOutCubic),
     );
   }
@@ -199,9 +194,6 @@ class _PremiumDonorCardState extends State<_PremiumDonorCard>
 
   @override
   Widget build(BuildContext context) {
-    // Top 3 donors get a special gold highlight
-    final bool isTopDonor = widget.index < 3;
-
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: 1.0),
       duration: const Duration(milliseconds: 600),
@@ -226,78 +218,52 @@ class _PremiumDonorCardState extends State<_PremiumDonorCard>
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: AppColors.surfaceLight,
-              borderRadius: BorderRadius.circular(20),
-              gradient: isTopDonor
-                  ? LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.surfaceLight,
-                        AppColors.accentGold.withOpacity(0.05),
-                      ],
-                    )
-                  : null,
+              borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: isTopDonor
-                    ? AppColors.accentGold.withOpacity(0.3)
-                    : AppColors.glassBorder.withOpacity(0.05),
-                width: isTopDonor ? 1.5 : 1,
+                color: AppColors.glassBorder.withOpacity(0.06),
+                width: 1.2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: isTopDonor
-                      ? AppColors.accentGold.withOpacity(0.1)
-                      : Colors.black.withOpacity(0.2),
+                  color: Colors.black.withOpacity(0.15),
                   blurRadius: 15,
-                  offset: const Offset(0, 6),
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
             child: Stack(
               children: [
-                // Classic Graphics: Ambient Watermark
                 Positioned(
-                  right: -10,
-                  top: -10,
+                  right: -15,
+                  top: -15,
                   child: Transform.rotate(
                     angle: -0.2,
                     child: Icon(
                       Icons.volunteer_activism_rounded,
-                      size: 80,
-                      color: Colors.white.withOpacity(0.02),
+                      size: 90,
+                      color: Colors.white.withOpacity(0.015),
                     ),
                   ),
                 ),
-
-                // Foreground Content
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Premium Avatar Block
                     Container(
-                      height: 52,
-                      width: 52,
+                      height: 54,
+                      width: 54,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: isTopDonor
-                              ? [
-                                  AppColors.accentGold,
-                                  Color(0xFFB8860B),
-                                ] // Rich gold
-                              : [
-                                  AppColors.primaryOrange,
-                                  AppColors.secondaryOrange,
-                                ],
+                          colors: [
+                            AppColors.primaryOrange,
+                            AppColors.secondaryOrange,
+                          ],
                         ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color:
-                                (isTopDonor
-                                        ? AppColors.accentGold
-                                        : AppColors.primaryOrange)
-                                    .withOpacity(0.3),
+                            color: AppColors.primaryOrange.withOpacity(0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -317,8 +283,6 @@ class _PremiumDonorCardState extends State<_PremiumDonorCard>
                       ),
                     ),
                     const SizedBox(width: 16),
-
-                    // Donor Name & Subtitle
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,38 +292,53 @@ class _PremiumDonorCardState extends State<_PremiumDonorCard>
                             style: GoogleFonts.poppins(
                               color: AppColors.textPrimary,
                               fontSize: 16,
-                              fontWeight: isTopDonor
-                                  ? FontWeight.bold
-                                  : FontWeight.w600,
+                              fontWeight: FontWeight.w600,
                               letterSpacing: 0.3,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 6),
                           Text(
-                            isTopDonor ? "Top Contributor" : "Generous Donor",
+                            "Event: ${widget.donor.category ?? 'General'}",
                             style: GoogleFonts.poppins(
-                              color: isTopDonor
-                                  ? AppColors.accentGold.withOpacity(0.8)
-                                  : AppColors.textMuted,
+                              color: AppColors.textSecondary,
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today_rounded,
+                                size: 11,
+                                color: AppColors.textMuted,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                widget.donor.date ?? "Recent",
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.textMuted,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-
-                    // Premium Amount Pill
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
+                        horizontal: 14,
+                        vertical: 10,
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.scaffoldDeep.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: AppColors.glassBorder.withOpacity(0.1),
                         ),
@@ -370,12 +349,12 @@ class _PremiumDonorCardState extends State<_PremiumDonorCard>
                           Text(
                             "₹",
                             style: GoogleFonts.poppins(
-                              color: AppColors.accentGold,
-                              fontSize: 15,
+                              color: AppColors.primaryOrange,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(width: 2),
+                          const SizedBox(width: 4),
                           Text(
                             widget.donor.amount.toString(),
                             style: GoogleFonts.poppins(
