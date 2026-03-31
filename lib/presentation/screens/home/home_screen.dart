@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       ),
       _HomeMenuItem(
         title: "Donors of Mandir",
-        icon: Icons.festival_rounded,
+        icon: Icons.temple_hindu_rounded,
         builder: (_) => const DonorScreen(),
       ),
     ];
