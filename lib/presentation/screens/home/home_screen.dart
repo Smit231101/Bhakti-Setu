@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:bhakti_setu/core/widgets/custom_app_bar.dart';
+import 'package:bhakti_setu/presentation/screens/donor/donor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bhakti_setu/core/theme/app_colors.dart';
@@ -21,6 +22,11 @@ class HomeScreen extends StatelessWidget {
         title: "Festivals & Muhurat",
         icon: Icons.festival_rounded,
         builder: (_) => const FestivalScreen(),
+      ),
+      _HomeMenuItem(
+        title: "Donors of Mandir",
+        icon: Icons.festival_rounded,
+        builder: (_) => const DonorScreen(),
       ),
     ];
 

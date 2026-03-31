@@ -1,4 +1,6 @@
+import 'package:bhakti_setu/data/repositories/donor_repository.dart';
 import 'package:bhakti_setu/data/services/firebase/temple_info_service.dart';
+import 'package:bhakti_setu/presentation/providers/donor_provider.dart';
 import 'package:bhakti_setu/presentation/providers/temple_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -23,4 +25,9 @@ final List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(
     create: (_) => TempleProvider(TempleInfoService()),
   ),
+  ChangeNotifierProvider(
+  create: (_) => DonorProvider(
+    DonorRepository(DonorFirestoreService()),
+  ),
+),
 ];
