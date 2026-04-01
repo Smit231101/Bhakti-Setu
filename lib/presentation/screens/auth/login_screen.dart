@@ -5,10 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +55,29 @@ class LoginScreen extends StatelessWidget {
 
                 await provider.sendOtp(phone);
 
+                if (!context.mounted) {
+                  return;
+                }
+
                 if (provider.error != null && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(provider.error!)),
                   );
+                  return;
                 }
 
-                if (provider.verificationId != null && context.mounted) {
-                  Navigator.push(
+                if (provider.user != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Phone number verified")),
+                  );
+                  return;
+                }
+
+                if (provider.verificationId != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("OTP sent successfully")),
+                  );
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const OtpScreen()),
                   );

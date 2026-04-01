@@ -6,16 +6,10 @@ class AuthRepository {
 
   AuthRepository(this.service);
 
-  Future<void> sendOtp({
-    required String phone,
-    required Function(String) codesent,
-    required Function(String) onError,
-  }) async {
-    await service.sendOtp(
-      phoneNumber: phone,
-      codesent: codesent,
-      onError: onError,
-    );
+  Stream<User?> authStateChanges() => service.authStateChanges();
+
+  Future<String?> sendOtp({required String phone}) async {
+    return service.sendOtp(phoneNumber: phone);
   }
 
   Future<User?> verifyOtp({
