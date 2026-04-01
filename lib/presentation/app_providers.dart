@@ -1,5 +1,8 @@
+import 'package:bhakti_setu/data/repositories/auth_repository.dart';
 import 'package:bhakti_setu/data/repositories/donor_repository.dart';
+import 'package:bhakti_setu/data/services/firebase/auth_service.dart';
 import 'package:bhakti_setu/data/services/firebase/temple_info_service.dart';
+import 'package:bhakti_setu/presentation/providers/auth_provider.dart';
 import 'package:bhakti_setu/presentation/providers/donor_provider.dart';
 import 'package:bhakti_setu/presentation/providers/temple_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,21 +16,16 @@ import 'package:bhakti_setu/presentation/providers/event_provider.dart';
 
 final List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(
-    create: (_) => FestivalProvider(
-      FestivalRepository(FestivalApiService()),
-    ),
+    create: (_) => FestivalProvider(FestivalRepository(FestivalApiService())),
   ),
   ChangeNotifierProvider(
-    create: (_) => EventProvider(
-      EventRepository(EventFirestoreService()),
-    ),
+    create: (_) => EventProvider(EventRepository(EventFirestoreService())),
+  ),
+  ChangeNotifierProvider(create: (_) => TempleProvider(TempleInfoService())),
+  ChangeNotifierProvider(
+    create: (_) => DonorProvider(DonorRepository(DonorFirestoreService())),
   ),
   ChangeNotifierProvider(
-    create: (_) => TempleProvider(TempleInfoService()),
+    create: (_) => AuthProvider(AuthRepository(AuthService())),
   ),
-  ChangeNotifierProvider(
-  create: (_) => DonorProvider(
-    DonorRepository(DonorFirestoreService()),
-  ),
-),
 ];
