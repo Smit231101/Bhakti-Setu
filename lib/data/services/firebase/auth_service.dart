@@ -5,7 +5,7 @@ class AuthService {
 
   // Send OTP
   Future<void> sendOtp({
-    required String phoneNunber,
+    required String phoneNumber,
     required Function(String verificationId) codesent,
     required Function(String error) onError,
   }) async {
