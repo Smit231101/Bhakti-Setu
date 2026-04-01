@@ -1,6 +1,6 @@
 import 'package:bhakti_setu/core/theme/app_colors.dart';
 import 'package:bhakti_setu/presentation/app_providers.dart';
-import 'package:bhakti_setu/presentation/screens/home/home_screen.dart';
+import 'package:bhakti_setu/presentation/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,7 @@ class BhaktiSetuApp extends StatelessWidget {
           scaffoldBackgroundColor: AppColors.scaffoldBackground,
           primaryColor: AppColors.primaryOrange,
         ),
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }
