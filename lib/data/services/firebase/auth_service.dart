@@ -9,7 +9,15 @@ class AuthService {
     required Function(String verificationId) codesent,
     required Function(String error) onError,
   }) async {
+    final normalizedPhoneNumber = phoneNumber.trim();
+
+    if (normalizedPhoneNumber.isEmpty) {
+      onError("Phone number is required");
+      return;
+    }
+
     await _auth.verifyPhoneNumber(
+      phoneNumber: normalizedPhoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await _auth.signInWithCredential(credential);
       },
