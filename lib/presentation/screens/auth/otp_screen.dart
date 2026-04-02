@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'package:bhakti_setu/core/theme/app_colors.dart';
-import 'package:bhakti_setu/core/widgets/custom_app_bar.dart';
 import 'package:bhakti_setu/presentation/providers/auth_provider.dart';
 import 'package:bhakti_setu/presentation/screens/home/home_screen.dart';
 
