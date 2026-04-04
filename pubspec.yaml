@@ -95,6 +95,11 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 flutter_icons:
-  android: true
+  android: "launcher_icon"
   ios: true
   image_path: "assets/image.png"
+  min_sdk_android: 21 # Required for modern Android versions
+  
+  # Adaptive Icon settings for Android (Optional but highly recommended for a premium feel)
+  adaptive_icon_background: "#0A0A0A" # Your AppColors.scaffoldDeep hex code
+  adaptive_icon_foreground: "assets/image.png"
