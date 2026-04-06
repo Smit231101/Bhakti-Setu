@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:bhakti_setu/core/widgets/custom_app_bar.dart';
+import 'package:bhakti_setu/data/services/notifications/notification_service.dart';
 import 'package:bhakti_setu/presentation/screens/donor/donor_screen.dart';
 import 'package:bhakti_setu/presentation/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,21 @@ import 'package:bhakti_setu/core/theme/app_colors.dart';
 import 'package:bhakti_setu/presentation/screens/event/event_screen.dart';
 import 'package:bhakti_setu/presentation/screens/festival/festival_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final NotificationService notificationService = NotificationService();
+
+  @override
+  void initState() {
+    super.initState();
+    notificationService.requestNotificationPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
