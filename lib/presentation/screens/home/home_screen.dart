@@ -17,12 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final NotificationService notificationService = NotificationService();
+  final NotificationService service = NotificationService();
 
   @override
   void initState() {
     super.initState();
-    notificationService.requestNotificationPermission();
+    service.requestNotificationPermission();
   }
 
   @override
